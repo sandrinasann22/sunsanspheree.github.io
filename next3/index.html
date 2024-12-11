@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi Pergerakan Orbit Interaktif</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle, #1e3c72, #2a5298);
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      border: 2px solid #fff;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2rem;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      background-clip: text;
+      color: transparent;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .controls label {
+      font-size: 1rem;
+    }
+
+    .controls input {
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+      text-align: center;
+    }
+
+    .controls button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #2575fc;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background: #1e3c72;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Simulasi Pergerakan Orbit Interaktif</h1>
+    <p>Masukkan parameter orbit untuk memulai simulasi.</p>
+    <div class="controls">
+      <label>
+        Radius X:
+        <input type="number" id="radiusX" value="200" />
+      </label>
+      <label>
+        Radius Y:
+        <input type="number" id="radiusY" value="150" />
+      </label>
+      <label>
+        Kecepatan:
+        <input type="number" id="speed" value="0.01" step="0.01" />
+      </label>
+      <button onclick="startSimulation()">Mulai Simulasi</button>
+    </div>
+    <canvas id="orbitCanvas" width="600" height="600"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('orbitCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const planetRadius = 10; // Radius planet
+    const starRadius = 20; // Radius bintang pusat
+    let angle = 0; // Sudut awal
+
+    let orbitRadiusX = 200; // Default radius X
+    let orbitRadiusY = 150; // Default radius Y
+    let speed = 0.01; // Default kecepatan
+
+    function drawOrbit() {
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, orbitRadiusX, orbitRadiusY, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    function drawStar() {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, starRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffcc00';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function drawPlanet() {
+      const x = centerX + orbitRadiusX * Math.cos(angle);
+      const y = centerY + orbitRadiusY * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.arc(x, y, planetRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#00aaff';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawOrbit();
+      drawStar();
+      drawPlanet();
+      angle += speed; // Kecepatan orbit
+      requestAnimationFrame(update);
+    }
+
+    function startSimulation() {
+      orbitRadiusX = parseFloat(document.getElementById('radiusX').value) || 200;
+      orbitRadiusY = parseFloat(document.getElementById('radiusY').value) || 150;
+      speed = parseFloat(document.getElementById('speed').value) || 0.01;
+      angle = 0; // Reset sudut
+      update();
+    }
+
+    // Memulai simulasi default
+    update();
+  </script>
+</body>
+</html>

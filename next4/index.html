@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Curah Hujan</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #4facfe, #00f2fe);
+      color: #333;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #0077ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005bb5;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #0077ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Curah Hujan</h1>
+    <div class="form-group">
+      <label for="rainRate">Laju Curah Hujan (mm/jam):</label>
+      <input type="number" id="rainRate" placeholder="Masukkan laju curah hujan" />
+    </div>
+    <div class="form-group">
+      <label for="duration">Durasi Hujan (jam):</label>
+      <input type="number" id="duration" placeholder="Masukkan durasi hujan" />
+    </div>
+    <button onclick="calculateRainfall()">Hitung Curah Hujan</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateRainfall() {
+      // Mendapatkan nilai dari input
+      const rainRate = parseFloat(document.getElementById('rainRate').value);
+      const duration = parseFloat(document.getElementById('duration').value);
+
+      // Validasi input
+      if (isNaN(rainRate) || isNaN(duration) || rainRate <= 0 || duration <= 0) {
+        document.getElementById('result').textContent = "Mohon masukkan nilai yang valid.";
+        return;
+      }
+
+      // Menghitung curah hujan total dengan integrasi sederhana (laju * waktu)
+      const totalRainfall = rainRate * duration;
+
+      // Menampilkan hasil
+      document.getElementById('result').textContent = `Total curah hujan: ${totalRainfall.toFixed(2)} mm.`;
+    }
+  </script>
+</body>
+</html>
